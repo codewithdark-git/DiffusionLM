@@ -8,6 +8,7 @@ __pycache__/
 *.dylib
 
 .pypirc
+
 # Distribution / packaging
 .Python
 env/
@@ -176,4 +177,5 @@ cython_debug/
 .ruff_cache/
 
 # PyPI configuration file
-.pypirc
+.pypirc.pypirc
+venv
