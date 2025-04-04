@@ -5,12 +5,14 @@ __pycache__/
 
 # C extensions
 *.so
-venv/
-.venv/
-.pypirc
+*.dylib
 
+.pypirc
 # Distribution / packaging
 .Python
+env/
+venv/
+ENV/
 build/
 develop-eggs/
 dist/
