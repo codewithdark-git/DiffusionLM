@@ -12,11 +12,7 @@ setup(
     long_description=long_description,
     long_description_content_type="text/markdown",
     url="https://github.com/codewithdark-git/PIP-DifffusionLM",
-<<<<<<< HEAD
     packages=find_packages(include=["diffusionLM", "diffusionLM.*"]),
-=======
-    packages=find_packages(include=["diffusionLM/*"]),
->>>>>>> 82fb311 (first commit)
     classifiers=[
         "Development Status :: 3 - Alpha",
         "Intended Audience :: Science/Research",
