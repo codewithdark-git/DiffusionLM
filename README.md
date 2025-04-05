@@ -1,6 +1,6 @@
 # DiffusionLM: Large Language Models with Diffusion
 
-[![PyPI version](https://badge.fury.io/py/diffusion-llm.svg)](https://badge.fury.io/py/diffusion-llm)
+[![PyPI version](https://badge.fury.io/py/diffusionLM.svg)](https://badge.fury.io/py/diffusionLM)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
 DiffusionLM is a novel approach to language modeling that combines transformer architectures with diffusion processes for high-quality text generation. This package provides a flexible and efficient implementation of diffusion-based language models.
@@ -39,7 +39,7 @@ DiffusionLM is a novel approach to language modeling that combines transformer a
 ## Installation
 
 ```bash
-pip install diffusion-llm
+pip install diffusionLM
 ```
 
 For development installation:
@@ -53,9 +53,9 @@ pip install -e .
 ## Quick Start
 
 ```python
-from diffusion_llm.utils import prepare_dataset
+from diffusionLM.utils import prepare_dataset
+from diffusionLM.model import DiffusionConfig, DiffusionLLM
 from transformers import AutoTokenizer
-from diffusion_llm.model import DiffusionConfig, DiffusionLLM
 
 # Load tokenizer and prepare dataset
 tokenizer = AutoTokenizer.from_pretrained("gpt2")
@@ -73,7 +73,8 @@ config = DiffusionConfig(
         mask_token_id=tokenizer.mask_token_id,
         # **config_kwargs
     )
-    model = DiffusionLLM(config)
+
+model = DiffusionLLM(config)
 
 
 ```
@@ -83,7 +84,7 @@ config = DiffusionConfig(
 ### Basic Training
 
 ```python
-from diffusion_llm import trainer
+from diffusionLM import trainer
 
 train_model = trainer(
         model=model,
@@ -101,7 +102,7 @@ train_model = trainer(
 ### Model Registry
 
 ```python
-from diffusion_llm import registerANDpush
+from diffusionLM import registerANDpush
 
 registerANDpush(
     model=trained_model,
@@ -116,7 +117,7 @@ registerANDpush(
 The package includes comprehensive error handling:
 
 ```python
-from diffusion_llm import DiffusionLMError, handle_errors
+from diffusionLM import DiffusionLMError, handle_errors
 
 @handle_errors()
 def your_function():
