@@ -2,6 +2,8 @@
 
 [![PyPI version](https://badge.fury.io/py/diffusionLM.svg)](https://badge.fury.io/py/diffusionLM)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+[![Sponsor](https://img.shields.io/github/sponsors/codewithdark-git?style=social)](https://github.com/sponsors/codewithdark-git)
+
 
 DiffusionLM is a novel approach to language modeling that combines transformer architectures with diffusion processes for high-quality text generation. This package provides a flexible and efficient implementation of diffusion-based language models.
 
