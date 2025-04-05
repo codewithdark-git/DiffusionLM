@@ -2,8 +2,8 @@ import torch
 import torch.nn as nn
 import torch.nn.functional as F
 from typing import Dict, Optional
-from model.transformer_block import TransformerBlock
-from model.time_embedding import TimeEmbedding
+from .transformer_block import TransformerBlock
+from .time_embedding import TimeEmbedding
 
 
 class LLaDAModel(nn.Module):
