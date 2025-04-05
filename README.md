@@ -125,6 +125,23 @@ def your_function():
     pass
 ```
 
+## Sponsorship
+
+If you find DiffusionLM useful for your project or research, please consider supporting its development through GitHub Sponsors. Your sponsorship helps maintain the project and develop new features.
+
+[![Sponsor](https://img.shields.io/github/sponsors/codewithdark-git?style=social)](https://github.com/sponsors/codewithdark-git)
+
+### Why Sponsor?
+
+- Support ongoing development and maintenance
+- Priority bug fixes and feature requests
+- Recognition in our documentation
+- Help make DiffusionLM better for everyone
+
+### How to Sponsor
+
+Click the "Sponsor" button at the top of the repository or visit our [GitHub Sponsors page](https://github.com/sponsors/codewithdark-git).
+
 ## Contributing
 
 1. Fork the repository
