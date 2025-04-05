@@ -1,0 +1,12 @@
+{
+    "recommendations": [
+        "ms-python.python",
+        "ms-python.vscode-pylance",
+        "ms-python.black-formatter",
+        "charliermarsh.ruff",
+        "ms-toolsai.jupyter",
+        "njpwerner.autodocstring",
+        "tamasfe.even-better-toml",
+        "streetsidesoftware.code-spell-checker"
+    ]
+}

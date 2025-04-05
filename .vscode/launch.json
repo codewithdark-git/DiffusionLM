@@ -1,0 +1,39 @@
+{
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "name": "Python: Current File",
+      "type": "python",
+      "request": "launch",
+      "program": "${file}",
+      "console": "integratedTerminal",
+      "justMyCode": false
+    },
+    {
+      "name": "Python: Run Tests",
+      "type": "python",
+      "request": "launch",
+      "module": "pytest",
+      "args": [
+        "tests/",
+        "-v"
+      ],
+      "console": "integratedTerminal",
+      "justMyCode": false
+    },
+    {
+      "name": "Python: Build Docs",
+      "type": "python",
+      "request": "launch",
+      "cwd": "${workspaceFolder}/docs",
+      "module": "sphinx",
+      "args": [
+        "-b",
+        "html",
+        ".",
+        "_build/html"
+      ],
+      "console": "integratedTerminal"
+    }
+  ]
+}
