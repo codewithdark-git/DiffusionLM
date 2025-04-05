@@ -5,11 +5,11 @@ from torch.utils.data import DataLoader
 from pathlib import Path
 from tqdm import tqdm
 
-from model.transformers_model import DiffusionLLM
-from model.mask_token import mask_tokens_for_diffusion
-from evaluate import evaluate
-from model_save import save_model
-from utils.error_handler import handle_errors, DiffusionLMError
+from diffusionLM.model.transformers_model import DiffusionLLM
+from diffusionLM.model.mask_token import mask_tokens_for_diffusion
+from .evaluate import evaluate
+from diffusionLM.save_model.model_save import save_model
+from diffusionLM.utils.error_handler import handle_errors, DiffusionLMError
 
 logger = logging.getLogger(__name__)
 
