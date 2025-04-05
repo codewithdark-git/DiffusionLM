@@ -1,7 +1,7 @@
 import torch
 import torch.nn as nn
 from transformers import PretrainedConfig, PreTrainedModel
-from model.diffusionLM import LLaDAModel
+from .diffusionLM import LLaDAModel
 
 class DiffusionConfig(PretrainedConfig):
     """Configuration class for Diffusion-LLM model."""
