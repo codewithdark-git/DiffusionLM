@@ -53,9 +53,9 @@ pip install -e .
 ## Quick Start
 
 ```python
-from diffusion_llm import DiffusionLLM, prepare_dataset
+from diffusion_llm.utils import prepare_dataset
 from transformers import AutoTokenizer
-from diffusion_llm import DiffusionConfig, DiffusionLLM
+from diffusion_llm.model import DiffusionConfig, DiffusionLLM
 
 # Load tokenizer and prepare dataset
 tokenizer = AutoTokenizer.from_pretrained("gpt2")
@@ -67,11 +67,11 @@ train_dataset, val_dataset, _ = prepare_dataset(
 # Initialize model
 config = DiffusionConfig(
         vocab_size=len(tokenizer),
-        max_position_embeddings=args.max_length,
-        num_timesteps=args.num_timesteps,
+        max_position_embeddings=256,
+        num_timesteps=50,
         pad_token_id=tokenizer.pad_token_id,
         mask_token_id=tokenizer.mask_token_id,
-        **config_kwargs
+        # **config_kwargs
     )
     model = DiffusionLLM(config)
 
