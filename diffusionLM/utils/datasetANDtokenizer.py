@@ -9,7 +9,14 @@ logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
 
 class DatasetPreparationError(Exception):
-    """Custom exception for dataset preparation errors"""
+    """
+    Custom exception for dataset preparation errors.
+
+    This exception is raised when there is an issue with loading or tokenizing the dataset.
+
+    Args:
+        message: A descriptive error message.
+    """
     def __init__(self, message: str):
         self.message = message
         super().__init__(self.message)
@@ -25,14 +32,20 @@ def prepare_dataset(
     Prepare a Hugging Face dataset for training.
 
     Args:
-        dataset_name: Name of the dataset to load
-        tokenizer_name: Name of the tokenizer to use
-        max_length: Maximum sequence length
-        cache_dir: Directory to cache the dataset
-        num_proc: Number of processes for tokenization
+        dataset_name: Name of the dataset to load (e.g., "wikitext/wikitext-2-raw-v1").
+        tokenizer_name: Name of the tokenizer to use (e.g., "gpt2").
+        max_length: Maximum sequence length for tokenized inputs.
+        cache_dir: Directory to cache the dataset.
+        num_proc: Number of processes for tokenization.
 
     Returns:
-        Train and validation datasets
+        A tuple containing:
+            - Train dataset (PYTORCH_Dataset)
+            - Validation dataset (Optional[PYTORCH_Dataset])
+            - Tokenizer (AutoTokenizer)
+
+    Raises:
+        DatasetPreparationError: If there is an issue with loading or tokenizing the dataset.
     """
     try:
         # Load tokenizer

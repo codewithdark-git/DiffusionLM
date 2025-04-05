@@ -8,15 +8,19 @@ def mask_tokens_for_diffusion(
     mask_token_id: int,
 ):
     """
-    Apply forward diffusion process by masking tokens according to timestep.
+    Apply forward diffusion process by masking tokens according to the timestep.
 
     Args:
-        batch: Batch of token sequences
-        timestep: Current time step (between 0 and 1)
-        mask_token_id: ID of the mask token
+        batch: A dictionary containing input token sequences and attention masks.
+        timestep: Current timestep (between 0 and 1) for masking probability.
+        mask_token_id: ID of the mask token to replace selected tokens.
 
     Returns:
-        Dictionary with masked inputs and labels
+        A dictionary containing:
+            - input_ids: Masked input token IDs.
+            - attention_mask: Attention mask for the input.
+            - labels: Labels for the masked tokens (-100 for unmasked tokens).
+            - mask_ratio: Ratio of tokens that were masked.
     """
     input_ids = batch["input_ids"].clone()
     attention_mask = batch["attention_mask"]

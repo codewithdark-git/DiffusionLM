@@ -4,7 +4,26 @@ from transformers import PretrainedConfig, PreTrainedModel
 from .diffusionLM import LLaDAModel
 
 class DiffusionConfig(PretrainedConfig):
-    """Configuration class for Diffusion-LLM model."""
+    """
+    Configuration class for the Diffusion-LLM model.
+    This class defines the model's hyperparameters and architecture details.
+    Args:
+        vocab_size: Size of the vocabulary.
+        hidden_size: Dimensionality of the hidden layers.
+        num_hidden_layers: Number of transformer layers.
+        num_attention_heads: Number of attention heads per layer.
+        intermediate_size: Dimensionality of the feed-forward layers.
+        hidden_dropout_prob: Dropout probability for hidden layers.
+        attention_probs_dropout_prob: Dropout probability for attention layers.
+        max_position_embeddings: Maximum number of positional embeddings.
+        initializer_range: Standard deviation for weight initialization.
+        layer_norm_eps: Epsilon value for layer normalization.
+        pad_token_id: ID of the padding token.
+        mask_token_id: ID of the mask token.
+        eos_token_id: ID of the end-of-sequence token.
+        num_timesteps: Number of diffusion timesteps.
+        time_embed_dim: Dimensionality of the time embedding.
+    """
     model_type = "diffusionLM"
     
     def __init__(
@@ -43,7 +62,26 @@ class DiffusionConfig(PretrainedConfig):
         self.time_embed_dim = time_embed_dim
 
 class DiffusionLLM(PreTrainedModel):
-    """Main Diffusion-LLM model class"""
+    """
+    Main Diffusion Language Model (Diffusion-LLM) implementing a transformer-based 
+    architecture with diffusion-based text generation.
+    This model combines transformer architectures with diffusion models to generate
+    high-quality text through an iterative denoising process. It supports both
+    standard and streaming text generation with various decoding strategies.
+    Args:
+        config (DiffusionConfig): Configuration object containing model hyperparameters,
+            architecture settings, and training parameters.
+    The model can be used for:
+    - Conditional text generation
+    - Iterative text refinement
+    - Streaming text generation
+    - Beam search decoding
+    Methods:
+        - forward: Perform a forward pass through the model.
+        - generate: Generate text using the reverse diffusion process.
+        - generate_stream: Stream generated tokens for real-time applications.
+
+    """
     config_class = DiffusionConfig
     base_model_prefix = "diffusionLM"
 
@@ -60,6 +98,19 @@ class DiffusionLLM(PreTrainedModel):
         labels=None,
         return_dict=True,
     ):
+        """
+        Perform a forward pass through the model.
+        Args:
+            input_ids: Input token IDs.
+            attention_mask: Attention mask to avoid attending to padding tokens.
+            timesteps: Diffusion timesteps for conditioning.
+            labels: Target labels for supervised training.
+            return_dict: Whether to return a dictionary of outputs.
+        Returns:
+            A dictionary containing:
+                - loss: Loss value (if labels are provided).
+                - logits: Logits for each token in the sequence.
+        """
         outputs = self.model(
             input_ids=input_ids,
             attention_mask=attention_mask,
@@ -83,7 +134,23 @@ class DiffusionLLM(PreTrainedModel):
         use_streaming=False,
         callback_fn=None
     ):
-        """Unified generation interface"""
+        """
+        Generate text using the reverse diffusion process.
+        Args:
+            prompt: Optional text prompt to condition generation.
+            max_length: Maximum sequence length.
+            num_inference_steps: Number of denoising steps.
+            temperature: Sampling temperature.
+            strategy: Remasking strategy during generation.
+            top_p: Nucleus sampling parameter.
+            top_k: Top-k sampling parameter.
+            num_beams: Number of beams for beam search.
+            return_scores: Whether to return confidence scores.
+            use_streaming: Whether to stream generated tokens.
+            callback_fn: Optional callback function for streaming.
+        Returns:
+            A dictionary containing generated tokens and optional scores.
+        """
         if use_streaming:
             return self.generate_stream(
                 prompt=prompt,
@@ -110,7 +177,14 @@ class DiffusionLLM(PreTrainedModel):
             )
 
     def generate_stream(self, **kwargs):
-        """Streaming generation wrapper"""
+        """
+        Generate text using streaming generation.
+        This method allows for real-time generation of text tokens.
+        Args:
+            **kwargs: Additional arguments for generation.
+            Returns:
+                A generator yielding generated tokens one by one.
+        """
         return self.model.generate_stream(**kwargs)
 
     def prepare_inputs_for_generation(self, input_ids, **kwargs):

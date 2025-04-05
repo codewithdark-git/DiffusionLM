@@ -5,7 +5,7 @@ with open("README.md", "r", encoding="utf-8") as fh:
 
 setup(
     name="diffusionLM",
-    version="0.1.5",
+    version="0.1.7",
     author="Dark Coder",
     author_email="codewithdark90@gmail.com",
     description="A diffusion-based language model implementation",

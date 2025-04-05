@@ -1,4 +1,3 @@
-
 import torch
 from torch.utils.data import DataLoader
 from diffusionLM.model.transformers_model import DiffusionLLM
@@ -14,17 +13,17 @@ def evaluate(
     num_eval_steps: int = None,
 ):
     """
-    Evaluate LLaDA model on a validation set.
+    Evaluate the Diffusion-LLM model on a validation set.
 
     Args:
-        model: LLaDA model
-        dataloader: Validation dataloader
-        device: Device to run evaluation on
-        num_timesteps: Number of diffusion timesteps
-        num_eval_steps: Number of steps to evaluate (None for full dataset)
+        model: The Diffusion-LLM model to evaluate.
+        dataloader: DataLoader for the validation dataset.
+        device: Device to run the evaluation on (e.g., 'cuda' or 'cpu').
+        num_timesteps: Number of diffusion timesteps for evaluation.
+        num_eval_steps: Number of steps to evaluate (None for full dataset).
 
     Returns:
-        Average loss on validation set
+        Average loss on the validation set.
     """
     model.eval()
     total_loss = 0.0

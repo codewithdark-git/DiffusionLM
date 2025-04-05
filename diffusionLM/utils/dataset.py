@@ -6,11 +6,27 @@ import logging
 logger = logging.getLogger(__name__)
 
 class DatasetError(Exception):
-    """Custom exception for dataset errors"""
+    """
+    Custom exception for dataset errors.
+
+    This exception is raised when there is an issue with the dataset structure or access.
+    """
     pass
 
 class PYTORCH_Dataset(Dataset):
-    """Dataset wrapper for Hugging Face datasets for training."""
+    """
+    Dataset wrapper for Hugging Face datasets for training.
+
+    This class wraps a Hugging Face dataset and provides compatibility with PyTorch's DataLoader.
+
+    Args:
+        dataset: The Hugging Face dataset to wrap.
+        mask_token_id: The ID of the mask token.
+        pad_token_id: The ID of the padding token.
+
+    Raises:
+        DatasetError: If the dataset is None or does not have the required structure.
+    """
     def __init__(
         self,
         dataset: Any,
@@ -38,9 +54,30 @@ class PYTORCH_Dataset(Dataset):
             raise DatasetError(f"Failed to validate dataset structure: {str(e)}")
 
     def __len__(self) -> int:
+        """
+        Get the number of samples in the dataset.
+
+        Returns:
+            The number of samples in the dataset.
+        """
         return len(self.dataset)
 
     def __getitem__(self, idx: int) -> Dict[str, torch.Tensor]:
+        """
+        Get a single sample from the dataset.
+
+        Args:
+            idx: The index of the sample to retrieve.
+
+        Returns:
+            A dictionary containing:
+                - input_ids: Token IDs (1D tensor).
+                - attention_mask: Attention mask (1D tensor).
+                - orig_len: Original length of the sequence (non-padding tokens).
+
+        Raises:
+            DatasetError: If there is an issue retrieving the sample.
+        """
         try:
             item = self.dataset[idx]
 

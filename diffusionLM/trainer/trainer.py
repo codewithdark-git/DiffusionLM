@@ -31,30 +31,48 @@ def trainer(
     save_path: Optional[str] = None,
     device: torch.device = torch.device("cuda" if torch.cuda.is_available() else "cpu"),
 ):
-    """Train the model with comprehensive error handling and logging."""
+    """
+    Train the Diffusion-LLM model.
+    Args:
+        model: The Diffusion-LLM model to train.
+        train_dataset: Training dataset (Hugging Face dataset).
+        val_dataset: Validation dataset (Hugging Face dataset).
+        batch_size: Batch size for training.
+        num_epochs: Number of training epochs.
+        learning_rate: Learning rate for the optimizer.
+        warmup_steps: Number of warmup steps for the learning rate scheduler.
+        max_grad_norm: Maximum gradient norm for gradient clipping.
+        num_timesteps: Number of diffusion timesteps.
+        save_path: Path to save the model checkpoints.
+        device: Device to run the training on (e.g., 'cuda' or 'cpu').
+    Returns:
+        Trained model.
+    Raises:
+        TrainingError: If there is an issue during training.
+    """
     logger.info("Starting training process")
     try:
         model.to(device)
         train_loader = _setup_data_loader(train_dataset, batch_size, True)
         val_loader = _setup_data_loader(val_dataset, batch_size, False) if val_dataset else None
-        
+
         optimizer = torch.optim.AdamW(model.parameters(), lr=learning_rate)
         lr_scheduler = _setup_scheduler(optimizer, warmup_steps)
-        
+
         best_val_loss = float('inf')
         early_stopping_patience = 3
         no_improvement_count = 0
-        
+
         for epoch in range(num_epochs):
             epoch_loss = _train_epoch(
                 model, train_loader, optimizer, lr_scheduler, 
                 device, max_grad_norm, num_timesteps, epoch
             )
-            
+
             if val_loader:
                 val_loss = evaluate(model, val_loader, device, num_timesteps)
                 logger.info(f"Epoch {epoch+1}/{num_epochs} - Val Loss: {val_loss:.4f}")
-                
+
                 if val_loss < best_val_loss:
                     best_val_loss = val_loss
                     no_improvement_count = 0
@@ -62,16 +80,17 @@ def trainer(
                         _save_checkpoint(model, optimizer, save_path, epoch, val_loss)
                 else:
                     no_improvement_count += 1
-                    
+
                 if no_improvement_count >= early_stopping_patience:
                     logger.info("Early stopping triggered")
                     break
-                    
+
         return model
-        
+
     except Exception as e:
         logger.error(f"Training failed: {str(e)}")
         raise TrainingError(f"Training process failed: {str(e)}")
+
 
 @handle_errors(TrainingError)
 def _train_epoch(model, train_loader, optimizer, lr_scheduler, device, max_grad_norm, num_timesteps, epoch):

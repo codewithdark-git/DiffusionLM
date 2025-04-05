@@ -8,9 +8,31 @@ from .time_embedding import TimeEmbedding
 
 class LLaDAModel(nn.Module):
     """
-    LLaDA: Large Language Diffusion Model
-    Uses a transformer backbone with timestep conditioning for diffusion-based language modeling
+    A torch-based language model that incorporates diffusion-based generation through time step conditioning.
+    The model allows for various text generation strategies including random sampling, confidence-based sampling,
+    semi-autoregressive generation, and beam search.
+    Attributes:
+        config: Configuration object containing model hyperparameters
+        wte (nn.Embedding): Token embeddings
+        wpe (nn.Embedding): Position embeddings
+        dropout (nn.Dropout): Dropout layer
+        h (nn.ModuleList): List of transformer blocks
+        ln_f (nn.LayerNorm): Final layer normalization
+        time_embed (TimeEmbedding): Time step embedding module
+        time_proj (nn.ModuleList): Time projection layers for each transformer block
+        lm_head (nn.Linear): Output projection to vocabulary
+    Methods:
+        forward(input_ids, attention_mask, timesteps, labels):
+            Forward pass through the model for training and inference
+        generate(prompt, max_length, num_inference_steps, temperature, strategy, top_p, top_k, num_beams, return_scores):
+            Generate text using various sampling strategies and the reverse diffusion process
+        generate_stream(prompt, max_length, num_inference_steps, temperature, strategy, top_p, top_k, num_beams, callback_fn):
+    Example:
+        >>> config = ModelConfig(vocab_size=50257, hidden_size=768)
+        >>> model = LLaDAModel(config)
+        >>> output = model.generate(prompt="Hello", max_length=50, temperature=0.7)
     """
+    
     def __init__(self, config):
         super().__init__()
         self.config = config
@@ -61,13 +83,11 @@ class LLaDAModel(nn.Module):
     ) -> Dict[str, torch.Tensor]:
         """
         Forward pass through the model
-
         Args:
             input_ids: Tensor of token ids [batch_size, seq_len]
             attention_mask: Mask tensor [batch_size, seq_len]
             timesteps: Current diffusion timesteps [batch_size]
             labels: Target token ids for masked positions [batch_size, seq_len]
-
         Returns:
             dict with loss and logits
         """

@@ -6,7 +6,11 @@ from typing import Type, Callable, Any
 logger = logging.getLogger(__name__)
 
 class DiffusionLMError(Exception):
-    """Base exception class for DiffusionLM package"""
+    """
+    Base exception class for DiffusionLM package.
+
+    This exception is used as a base class for all custom exceptions in the DiffusionLM package.
+    """
     pass
 
 def handle_errors(error_class: Type[Exception] = DiffusionLMError, 
@@ -14,11 +18,14 @@ def handle_errors(error_class: Type[Exception] = DiffusionLMError,
                  logger: logging.Logger = logger) -> Callable:
     """
     Decorator for handling errors in functions.
-    
+
     Args:
-        error_class: Exception class to wrap the error in
-        reraise: Whether to reraise the exception after logging
-        logger: Logger instance to use
+        error_class: Exception class to wrap the error in.
+        reraise: Whether to reraise the exception after logging.
+        logger: Logger instance to use for logging errors.
+
+    Returns:
+        A decorated function with error handling.
     """
     def decorator(func: Callable) -> Callable:
         @wraps(func)
@@ -29,7 +36,7 @@ def handle_errors(error_class: Type[Exception] = DiffusionLMError,
                 error_msg = f"Error in {func.__name__}: {str(e)}"
                 logger.error(error_msg)
                 logger.debug(traceback.format_exc())
-                
+
                 if reraise:
                     raise error_class(error_msg) from e
         return wrapper
@@ -40,11 +47,13 @@ def setup_logging(log_file: str = None,
                  format: str = '%(asctime)s - %(name)s - %(levelname)s - %(message)s') -> None:
     """
     Set up logging configuration.
-    
+
     Args:
-        log_file: Path to log file (optional)
-        level: Logging level
-        format: Log message format
+        log_file: Path to log file (optional).
+        level: Logging level (e.g., logging.INFO, logging.DEBUG).
+        format: Log message format.
+
+    This function configures the logging system to output logs to the console and optionally to a file.
     """
     logging.basicConfig(
         level=level,

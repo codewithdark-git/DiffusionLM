@@ -1,11 +1,23 @@
-
 import torch
 import torch.nn as nn
 import torch.nn.functional as F
 
 
 class MultiHeadAttention(nn.Module):
-    """Multi-head attention module"""
+    """
+    Multi-head self-attention mechanism.
+    This class implements the scaled dot-product attention mechanism with multiple attention heads.
+    Args:
+        config: Configuration object containing model hyperparameters.
+
+    Attributes:
+        q_proj: Linear layer for projecting queries.
+        k_proj: Linear layer for projecting keys.
+        v_proj: Linear layer for projecting values.
+        out_proj: Linear layer for projecting the output.
+        attn_dropout: Dropout layer for attention probabilities.
+        resid_dropout: Dropout layer for residual connections.
+    """
     def __init__(self, config):
         super().__init__()
         self.config = config
@@ -48,6 +60,20 @@ class MultiHeadAttention(nn.Module):
         return x.view(batch_size, -1, self.hidden_size)
 
     def forward(self, hidden_states, attention_mask=None, head_mask=None, output_attentions=False):
+        """
+        Perform a forward pass through the multi-head attention mechanism.
+
+        Args:
+            hidden_states: Input tensor of shape [batch_size, seq_length, hidden_size].
+            attention_mask: Optional mask to avoid attending to padding tokens.
+            head_mask: Optional mask for specific attention heads.
+            output_attentions: Whether to return attention probabilities.
+
+        Returns:
+            A tuple containing:
+                - output: Output tensor of shape [batch_size, seq_length, hidden_size].
+                - attention_probs (optional): Attention probabilities if output_attentions=True.
+        """
         batch_size, seq_length = hidden_states.shape[:2]
 
         # Project to queries, keys, values

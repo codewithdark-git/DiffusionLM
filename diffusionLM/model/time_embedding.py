@@ -3,7 +3,17 @@ import torch.nn as nn
 import torch
 
 class TimeEmbedding(nn.Module):
-    """Embedding for diffusion timesteps."""
+    """
+    Embedding layer for diffusion timesteps.
+
+    This class generates sinusoidal embeddings for diffusion timesteps and projects them to a higher-dimensional space.
+
+    Args:
+        time_embed_dim: Dimensionality of the time embedding.
+
+    Attributes:
+        time_embed: Sequential model for projecting sinusoidal embeddings.
+    """
     def __init__(self, time_embed_dim):
         super().__init__()
         self.time_embed_dim = time_embed_dim
@@ -15,10 +25,13 @@ class TimeEmbedding(nn.Module):
 
     def forward(self, timesteps):
         """
+        Generate time embeddings for the given timesteps.
+
         Args:
-            timesteps: [batch_size] tensor of timestep values
+            timesteps: Tensor of shape [batch_size] containing timestep values.
+
         Returns:
-            [batch_size, time_embed_dim] tensor of embeddings
+            Tensor of shape [batch_size, time_embed_dim] containing time embeddings.
         """
         half_dim = self.time_embed_dim // 8
         emb = math.log(10000) / (half_dim - 1)
