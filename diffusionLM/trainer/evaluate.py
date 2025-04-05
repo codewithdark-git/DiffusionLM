@@ -1,8 +1,8 @@
 
 import torch
 from torch.utils.data import DataLoader
-from model.transformers_model import DiffusionLLM
-from model.mask_token import mask_tokens_for_diffusion
+from diffusionLM.model.transformers_model import DiffusionLLM
+from diffusionLM.model.mask_token import mask_tokens_for_diffusion
 
 
 
