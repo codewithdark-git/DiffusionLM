@@ -7,12 +7,12 @@ __pycache__/
 *.so
 *.dylib
 
-.pypirc
+*.pypirc
 
 # Distribution / packaging
 .Python
 env/
-venv/
+venv
 ENV/
 build/
 develop-eggs/
