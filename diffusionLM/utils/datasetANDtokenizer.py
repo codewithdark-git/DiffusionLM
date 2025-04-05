@@ -3,7 +3,7 @@ from datasets import load_dataset
 import logging
 from typing import Tuple, Optional
 from transformers import AutoTokenizer, AutoModelForCausalLM
-from dataset import PYTORCH_Dataset
+from .dataset import PYTORCH_Dataset
 
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
