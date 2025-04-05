@@ -26,26 +26,19 @@ def prepare_dataset(
     tokenizer_name: str = "gpt2",
     max_length: int = 1024,
     cache_dir: Optional[str] = None,
-    num_proc: int = 4
+    num_proc: int = 4,
+    text_column: Optional[str] = None
 ) -> Tuple[PYTORCH_Dataset, Optional[PYTORCH_Dataset], AutoTokenizer]:
     """
     Prepare a Hugging Face dataset for training.
 
     Args:
-        dataset_name: Name of the dataset to load (e.g., "wikitext/wikitext-2-raw-v1").
-        tokenizer_name: Name of the tokenizer to use (e.g., "gpt2").
-        max_length: Maximum sequence length for tokenized inputs.
-        cache_dir: Directory to cache the dataset.
-        num_proc: Number of processes for tokenization.
-
-    Returns:
-        A tuple containing:
-            - Train dataset (PYTORCH_Dataset)
-            - Validation dataset (Optional[PYTORCH_Dataset])
-            - Tokenizer (AutoTokenizer)
-
-    Raises:
-        DatasetPreparationError: If there is an issue with loading or tokenizing the dataset.
+        dataset_name: Name of the dataset to load
+        tokenizer_name: Name of the tokenizer to use
+        max_length: Maximum sequence length
+        cache_dir: Directory to cache the dataset
+        num_proc: Number of processes for tokenization
+        text_column: Name of the text column (auto-detect if None)
     """
     try:
         # Load tokenizer
@@ -68,11 +61,37 @@ def prepare_dataset(
         except Exception as e:
             raise DatasetPreparationError(f"Failed to load dataset {dataset_name}: {str(e)}")
 
-        # Tokenize the dataset
+        # Auto-detect text column if not specified
+        if text_column is None:
+            # Common column names for text data
+            possible_columns = ['text', 'content', 'input_text', 'sentence', 'document']
+            available_columns = dataset['train'].column_names
+            
+            # Find the first matching column
+            text_column = next(
+                (col for col in possible_columns if col in available_columns),
+                None
+            )
+            
+            # If no standard column found, look for any string column
+            if text_column is None:
+                for col in available_columns:
+                    if isinstance(dataset['train'][0][col], str):
+                        text_column = col
+                        break
+            
+            if text_column is None:
+                raise DatasetPreparationError(
+                    f"Could not detect text column. Available columns: {available_columns}"
+                )
+            
+            logger.info(f"Auto-detected text column: {text_column}")
+
+        # Tokenize function with dynamic column handling
         def tokenize_function(examples):
             try:
                 return tokenizer(
-                    examples["text"],
+                    examples[text_column],
                     padding="max_length",
                     truncation=True,
                     max_length=max_length,
@@ -82,11 +101,14 @@ def prepare_dataset(
                 raise DatasetPreparationError(f"Tokenization failed: {str(e)}")
 
         logger.info("Tokenizing dataset")
+        # Remove only the text column used for tokenization
+        remove_columns = [text_column] if text_column in dataset['train'].column_names else None
+        
         tokenized_dataset = dataset.map(
             tokenize_function,
             batched=True,
             num_proc=num_proc,
-            remove_columns=["text"]
+            remove_columns=remove_columns
         )
 
         # Convert to PyTorch datasets
