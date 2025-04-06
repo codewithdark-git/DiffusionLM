@@ -47,8 +47,8 @@ pip install diffusionLM
 For development installation:
 
 ```bash
-git clone https://github.com/codewithdark-git/PIP-DifffusionLM.git
-cd PIP-DifffusionLM
+git clone https://github.com/codewithdark-git/DiffusionLM.git
+cd DiffusionLM
 pip install -e .
 ```
 
@@ -172,7 +172,7 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
   journal={GitHub Repository},
   year={2025},
   publisher={GitHub},
-  url={https://github.com/codewithdark-git/PIP-DifffusionLM}
+  url={https://github.com/codewithdark-git/DiffusionLM}
 }
 ```
 
@@ -180,4 +180,4 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 
 - GitHub: [@codewithdark-git](https://github.com/codewithdark-git)
 - Email: codewithdark90@gmail.com
-# PIP-DifffusionLM
+

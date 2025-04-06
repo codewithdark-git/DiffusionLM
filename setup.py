@@ -5,14 +5,16 @@ with open("README.md", "r", encoding="utf-8") as fh:
 
 setup(
     name="diffusionLM",
-    version="0.1.8.0",
+    version="0.1.9",
     author="Dark Coder",
     author_email="codewithdark90@gmail.com",
     description="A diffusion-based language model implementation",
     long_description=long_description,
     long_description_content_type="text/markdown",
-    url="https://github.com/codewithdark-git/PIP-DifffusionLM",
-    
+    project_urls={
+        "Homepage": "https://github.com/codewithdark-git/DiffusionLM",
+        "Sponsor": "https://github.com/sponsors/codewithdark-git",  # 💰
+    },
     packages=find_packages(include=["diffusionLM", "diffusionLM.*"]),
     classifiers=[
         "Development Status :: 3 - Alpha",
